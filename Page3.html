@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add First Product</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+    * {
+      font-family: "Outfit", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    .product-preview {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    .product-preview img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container button {
+      position: relative;
+      left: 360px;
+      padding: 5px 15px;
+      font-size: 12px;
+      margin: 20px 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">Let's add your first product</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <form id="productForm">
+          <div class="form-group">
+            <label for="productName">Product name</label>
+            <input type="text" class="form-control" id="productName" placeholder="e.g. anatomy book" />
+          </div>
+          <div class="form-group">
+            <label for="productDescription">Product Description</label>
+            <textarea class="form-control" id="productDescription" rows="3" placeholder="Description..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="productImage">Add Image(s)</label>
+            <input type="file" class="form-control-file" id="productImage" />
+          </div>
+          <div class="form-check mb-4">
+            <input type="checkbox" class="form-check-input" id="skuCheck" />
+            <label class="form-check-label" for="skuCheck">This product has an SKU code</label>
+            <input type="text" class="form-control" id="productName" placeholder="e.g. PrOD0001" />
+          </div>
+          <h3>Pricing Details</h3>
+          <div class="form-check mb-4">
+            <input type="checkbox" class="form-check-input" id="gstCheck" />
+            <label class="form-check-label" for="gstCheck">Price inclusive of GST</label>
+          </div>
+          <div class="form-group">
+            <label for="netPrice">Net price</label>
+            <input type="text" class="form-control" id="netPrice" placeholder="e.g. 80" />
+          </div>
+          <div class="form-group">
+            <label for="listPrice">List price</label>
+            <input type="text" class="form-control" id="listPrice" placeholder="e.g. 100" />
+          </div>
+          <div class="form-group">
+            <label for="discount">Discount percentage</label>
+            <input type="text" class="form-control" id="discount" placeholder="e.g. 20" />
+          </div>
+          <div class="form-group">
+            <label for="gstRate">GST rate</label>
+            <input type="text" class="form-control" id="gstRate" placeholder="e.g. 18" />
+          </div>
+          <div class="form-group">
+            <label for="shippingCharges">Shipping charges (if any)</label>
+            <input type="text" class="form-control" id="shippingCharges" placeholder="e.g. 40" />
+          </div>
+          <div class="form-group">
+            <label for="stockLevel">Stock level</label>
+            <input type="text" class="form-control" id="stockLevel" placeholder="e.g. 110" />
+          </div>
+          <a href="Page2.html" target="_blank"><button type="button" class="btn btn-secondary">Back</button></a>
+          <a href="Page1.html" target="_blank"><button type="button" class="btn btn-primary">Next</button></a>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <div class="product-preview">
+          <img id="previewImage" src="placeholder.jpg" alt="Product image" />
+          <h3 id="previewName">Product title</h3>
+          <p id="previewDescription">Product description...</p>
+          <p id="previewPricingDetails">
+            Pricing details will be shown here...
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document
+      .getElementById("productName")
+      .addEventListener("input", function () {
+        document.getElementById("previewName").textContent = this.value;
+      });
+
+    document
+      .getElementById("productDescription")
+      .addEventListener("input", function () {
+        document.getElementById("previewDescription").textContent =
+          this.value;
+      });
+
+    document
+      .getElementById("productImage")
+      .addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("previewImage").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+    document
+      .querySelectorAll(
+        "#netPrice, #listPrice, #discount, #gstRate, #shippingCharges, #stockLevel"
+      )
+      .forEach((input) => {
+        input.addEventListener("input", updatePricingDetails);
+      });
+
+    function updatePricingDetails() {
+      const netPrice = document.getElementById("netPrice").value || "N/A";
+      const listPrice = document.getElementById("listPrice").value || "N/A";
+      const discount = document.getElementById("discount").value || "N/A";
+      const gstRate = document.getElementById("gstRate").value || "N/A";
+      const shippingCharges =
+        document.getElementById("shippingCharges").value || "N/A";
+      const stockLevel = document.getElementById("stockLevel").value || "N/A";
+
+      const pricingDetails =
+               `<strong>Net Price:</strong> ${netPrice}<br>
+                <strong>List Price:</strong> ${listPrice}<br>
+                <strong>Discount:</strong> ${discount}%<br>
+                <strong>GST Rate:</strong> ${gstRate}%<br>
+                <strong>Shipping Charges:</strong> ${shippingCharges}<br>
+                <strong>Stock Level:</strong> ${stockLevel}`;
+      document.getElementById("previewPricingDetails").innerHTML = pricingDetails;
+    }
+  </script>
+</body>
+
+</html>
